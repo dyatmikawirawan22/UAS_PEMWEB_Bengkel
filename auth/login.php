@@ -16,8 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['nama_user'] = $user['nama_user'];
         $_SESSION['role_user'] = $user['role_user'];
 
-        // Arahkan semua ke dashboard universal
-        header("Location: ../dashboard.php");
+        // Arahkan semua ke index
+        header("Location: ../index.php");
         exit;
     } else {
         $error = "Email atau password salah.";
@@ -35,6 +35,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <h2>Login</h2>
 
     <?php if (isset($error)) echo "<p style='color:red;'>$error</p>"; ?>
+
+    <?php if (isset($GET['logout']) && $_GET['logout'] == 'sukses'): ?>
+        <p style="color: green;">Anda berhasil logout.</p>
+    <?php endif; ?>
+
+    <?php if (isset($_GET['pesan']) && $_GET['pesan'] == 'login_dulu'): ?>
+        <p style="color:red;">Silakan login untuk mengakses fitur tersebut.</p>
+    <?php endif; ?>
+
 
     <form action="" method="POST">
         <label>Email:</label><br>
