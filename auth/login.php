@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../includes/db.php'; // pastikan file db.php benar dan database terkoneksi
+include '../includes/db.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = htmlspecialchars($_POST['email_user']);
@@ -16,12 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['nama_user'] = $user['nama_user'];
         $_SESSION['role_user'] = $user['role_user'];
 
-        // Redirect berdasarkan role
-        if ($user['role_user'] == 'admin') {
-            header("Location: ../admin/dashboard.php");
-        } else {
-            header("Location: ../booking.php");
-        }
+        // Arahkan semua ke dashboard universal
+        header("Location: ../dashboard.php");
         exit;
     } else {
         $error = "Email atau password salah.";
@@ -36,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Login - Punjung Rejeki Motor</title>
 </head>
 <body>
-    <h2>Login Pengguna</h2>
+    <h2>Login</h2>
 
     <?php if (isset($error)) echo "<p style='color:red;'>$error</p>"; ?>
 

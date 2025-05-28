@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../includes/db.php'; // pastikan file ini ada dan benar
+include '../includes/db.php';
 
 // Proses form saat disubmit
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Validasi
     if ($password !== $konfirmasi) {
-        $error = "Password dan konfirmasi tidak cocok.";
+        $error = "Password tidak sama!";
     } else {
         $cek = mysqli_query($conn, "SELECT * FROM users WHERE email_user = '$email'");
         if (mysqli_num_rows($cek) > 0) {
