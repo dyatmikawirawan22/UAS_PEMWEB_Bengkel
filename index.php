@@ -1,67 +1,92 @@
-<?php session_start(); ?>
+<?php
+session_start();
+$nama_user = isset($_SESSION['nama_user']) ? $_SESSION['nama_user'] : null;
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard - Punjung Rejeki Motor</title>
+    <title>Punjung Rejeki Motor</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            padding: 20px;
+            background: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px 0;
+        }
+        nav {
+            margin: 20px 0;
+        }
+        .menu a {
+            display: inline-block;
+            margin: 10px 15px;
+            padding: 10px 20px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+        .menu a:hover {
+            background: #2980b9;
         }
         .auth-buttons {
-            margin-bottom: 20px;
+            margin-top: 20px;
         }
         .auth-buttons a {
-            display: inline-block;
-            padding: 10px 15px;
-            margin-right: 10px;
-            background-color: #007bff;
+            margin: 0 10px;
+            padding: 8px 16px;
+            background: #2ecc71;
             color: white;
             text-decoration: none;
             border-radius: 5px;
         }
-        .auth-buttons a:hover {
-            background-color: #0056b3;
+        .auth-buttons a.logout {
+            background: #e74c3c;
         }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        ul li {
-            margin-bottom: 10px;
-        }
-        ul li a {
-            text-decoration: none;
-            color: #333;
-        }
-        ul li a:hover {
-            text-decoration: underline;
+        .pesan {
+            color: green;
+            margin-top: 15px;
         }
     </style>
 </head>
 <body>
 
-<h1>Selamat Datang di Punjung Rejeki Motor</h1>
+<header>
+    <h1>PUNJUNG REJEKI MOTOR</h1>
+    <p>Layanan Servis Motor & Spare Part Terpercaya!</p>
+</header>
+
+<?php if (isset($_GET['pesan']) && $_GET['pesan'] == 'logout'): ?>
+    <p class="pesan">Anda berhasil logout.</p>
+<?php endif; ?>
+
+<?php if ($nama_user): ?>
+    <p>Halo, <strong><?= htmlspecialchars($nama_user) ?></strong>!</p>
+<?php endif; ?>
+
+<nav class="menu">
+    <a href="#">Booking Service</a>
+    <a href="#">Estimasi Biaya</a>
+    <a href="#">Product Spare Part</a>
+    <a href="#">Riwayat Servis</a>
+    <a href="#">Live Chat</a>
+</nav>
 
 <div class="auth-buttons">
-    <?php if (isset($_SESSION['id_user'])): ?>
-        <span>Halo, <strong><?= htmlspecialchars($_SESSION['nama_user']) ?></strong>!</span>
-        <a href="auth/logout.php">Logout</a>
-    <?php else: ?>
-        <a href="auth/login.php">Login</a>
+    <?php if (!$nama_user): ?>
+        <a href="auth/login.php">Masuk</a>
         <a href="auth/register.php">Daftar</a>
+    <?php else: ?>
+        <a href="auth/logout.php" class="logout">Logout</a>
     <?php endif; ?>
 </div>
-
-<h3>Fitur Kami</h3>
-<ul>
-    <li><a href="booking.php">🛠 Booking Servis</a></li>
-    <li><a href="estimasi.php">💰 Estimasi Biaya Servis</a></li>
-    <li><a href="riwayat.php">📋 Riwayat Servis</a></li>
-    <li><a href="produk.php">🧩 Cek Produk Part</a></li>
-    <li><a href="chat.php">💬 Live Chat</a></li>
-</ul>
 
 </body>
 </html>

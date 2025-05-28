@@ -1,26 +1,29 @@
 <?php
 session_start();
-include '../includes/db.php';
+require '../includes/db.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $email = htmlspecialchars($_POST['email_user']);
-    $password = $_POST['password_user'];
+$pesan = '';
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = trim($_POST['email']);
+    $password = trim($_POST['password']);
 
-    // Cek apakah email terdaftar
-    $query = mysqli_query($conn, "SELECT * FROM users WHERE email_user = '$email'");
-    $user = mysqli_fetch_assoc($query);
-
-    if ($user && password_verify($password, $user['password_user'])) {
-        // Login berhasil
-        $_SESSION['id_user'] = $user['id_user'];
-        $_SESSION['nama_user'] = $user['nama_user'];
-        $_SESSION['role_user'] = $user['role_user'];
-
-        // Arahkan semua ke index
-        header("Location: ../index.php");
-        exit;
+    if ($email == '' || $password == '') {
+        $pesan = 'Email dan password wajib diisi.';
     } else {
-        $error = "Email atau password salah.";
+        $stmt = $conn->prepare("SELECT * FROM users WHERE email_user = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+
+        if ($user && password_verify($password, $user['password_user'])) {
+            $_SESSION['id_user'] = $user['id_user'];
+            $_SESSION['nama_user'] = $user['nama_user'];
+            header("Location: ../index.php");
+            exit;
+        } else {
+            $pesan = 'Email atau password salah.';
+        }
     }
 }
 ?>
@@ -30,31 +33,81 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Login - Punjung Rejeki Motor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background: #0056b3;
+        }
+        .alert {
+            color: red;
+            margin-bottom: 10px;
+        }
+        .info {
+            color: green;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h2>Login</h2>
 
-    <?php if (isset($error)) echo "<p style='color:red;'>$error</p>"; ?>
+<div class="login-container">
+    <h2>Masuk ke Punjung Rejeki Motor</h2>
 
-    <?php if (isset($GET['logout']) && $_GET['logout'] == 'sukses'): ?>
-        <p style="color: green;">Anda berhasil logout.</p>
+    <?php if (isset($_GET['pesan']) && $_GET['pesan'] == 'logout'): ?>
+        <p class="info">Anda berhasil logout.</p>
     <?php endif; ?>
 
-    <?php if (isset($_GET['pesan']) && $_GET['pesan'] == 'login_dulu'): ?>
-        <p style="color:red;">Silakan login untuk mengakses fitur tersebut.</p>
+    <?php if ($pesan): ?>
+        <p class="alert"><?= $pesan ?></p>
     <?php endif; ?>
 
-
-    <form action="" method="POST">
-        <label>Email:</label><br>
-        <input type="email" name="email_user" required><br><br>
-
-        <label>Password:</label><br>
-        <input type="password" name="password_user" required><br><br>
-
-        <button type="submit">Login</button>
+    <form method="POST" action="">
+        <input type="text" name="email" placeholder="Email" required><br>
+        <input type="password" name="password" placeholder="Password" required><br>
+        <input type="submit" value="Masuk">
     </form>
 
     <p>Belum punya akun? <a href="register.php">Daftar di sini</a></p>
+</div>
+
 </body>
 </html>
