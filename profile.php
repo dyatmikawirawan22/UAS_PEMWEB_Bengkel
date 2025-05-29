@@ -9,8 +9,6 @@ if (!isset($_SESSION['id_user'])) {
 
 $id_user = $_SESSION['id_user'];
 $role_user = $_SESSION['role_user'];
-$pesan = '';
-$info = '';
 
 // Ambil data user
 $stmt = $conn->prepare("SELECT * FROM users WHERE id_user = ?");
@@ -19,40 +17,8 @@ $stmt->execute();
 $result = $stmt->get_result();
 $user = $result->fetch_assoc();
 
-// Proses update profil
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && $role_user === 'pelanggan') {
-    if (isset($_POST['update'])) {
-        $nama = trim($_POST['nama']);
-        $password_baru = $_POST['password'];
-        $konfirmasi = $_POST['konfirmasi'];
-
-        if ($password_baru !== $konfirmasi) {
-            $pesan = "Password dan konfirmasi tidak sama.";
-        } else {
-            if ($password_baru) {
-                $hashed = password_hash($password_baru, PASSWORD_DEFAULT);
-                $stmt = $conn->prepare("UPDATE users SET nama_user = ?, password_user = ? WHERE id_user = ?");
-                $stmt->bind_param("ssi", $nama, $hashed, $id_user);
-            } else {
-                $stmt = $conn->prepare("UPDATE users SET nama_user = ? WHERE id_user = ?");
-                $stmt->bind_param("si", $nama, $id_user);
-            }
-            $stmt->execute();
-            $_SESSION['nama_user'] = $nama;
-            $info = "Profil berhasil diperbarui.";
-        }
-    }
-
-    // Hapus akun
-    if (isset($_POST['hapus'])) {
-        $stmt = $conn->prepare("DELETE FROM users WHERE id_user = ?");
-        $stmt->bind_param("i", $id_user);
-        $stmt->execute();
-        session_destroy();
-        header("Location: index.php?pesan=akun_dihapus");
-        exit;
-    }
-}
+$pesan = $_GET['error'] ?? '';
+$info = $_GET['info'] ?? '';
 ?>
 
 <!DOCTYPE html>
@@ -93,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $role_user === 'pelanggan') {
         .alert { color: red; text-align: center; }
         .info { color: green; text-align: center; }
         input[type="text"], input[type="password"] {
-            width: 100%;
+            width: 95%;
             padding: 10px;
             margin: 8px 0;
         }
@@ -104,6 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $role_user === 'pelanggan') {
             padding: 10px;
             width: 100%;
             margin-top: 10px;
+            cursor: pointer;
         }
         input[type="submit"]:hover {
             background: #27ae60;
@@ -111,11 +78,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $role_user === 'pelanggan') {
         form {
             margin-top: 20px;
         }
-        .hapus-btn {
+        input[type="hapus"] {
             background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 96%;
             margin-top: 10px;
+            cursor: pointer;
+            text-align: center;
         }
-
+        input[type="hapus"]:hover {
+            background: #c0392b;
+        }
     </style>
 </head>
 <body>
@@ -128,28 +103,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $role_user === 'pelanggan') {
 <div class="container">
     <h2>Profil Anda</h2>
 
-    <?php if ($pesan): ?><p class="alert"><?= $pesan ?></p><?php endif; ?>
-    <?php if ($info): ?><p class="info"><?= $info ?></p><?php endif; ?>
+    <?php if ($pesan): ?><p class="alert"><?= htmlspecialchars($pesan) ?></p><?php endif; ?>
+    <?php if ($info): ?><p class="info"><?= htmlspecialchars($info) ?></p><?php endif; ?>
 
     <p><strong>Nama:</strong> <?= htmlspecialchars($user['nama_user']) ?></p>
     <p><strong>Email:</strong> <?= htmlspecialchars($user['email_user']) ?></p>
-    <!--<p><strong>Role:</strong> <?= htmlspecialchars($user['role_user']) ?></p>-->
 
     <?php if ($role_user === 'pelanggan'): ?>
-        <form method="POST">
+        <!-- Ubah Nama -->
+        <form method="POST" action="profile/ubah_nama.php">
             <label>Ubah Nama</label>
             <input type="text" name="nama" value="<?= htmlspecialchars($user['nama_user']) ?>" required>
-
-            <label>Ubah Password</label>
-            <input type="password" name="password" placeholder="Password baru">
-            <input type="password" name="konfirmasi" placeholder="Konfirmasi password baru">
-
-            <input type="submit" name="update" value="Simpan Perubahan">
-
-            <input type="submit" name="hapus" value="Hapus Akun" class="hapus-btn" onclick="return confirm('Yakin ingin menghapus akun?');">
+            <input type="submit" value="Simpan Nama">
         </form>
-    <?php else: ?>
-        <!--<p><em>Admin tidak dapat mengubah data profil.</em></p>-->
+
+        <!-- Ubah Password -->
+        <form method="POST" action="profile/ubah_password.php">
+            <label>Ubah Password</label>
+            <input type="password" name="password" placeholder="Password baru" required>
+            <input type="password" name="konfirmasi" placeholder="Konfirmasi password baru" required>
+            <input type="submit" value="Simpan Password">
+        </form>
+
+        <!-- Hapus Akun -->
+        <form method="POST" action="profile/hapus_akun.php" onclick="return confirm('Yakin ingin menghapus akun?');">
+            <input type="hapus" value="Hapus Akun" >
+        </form>
     <?php endif; ?>
 </div>
 </body>
