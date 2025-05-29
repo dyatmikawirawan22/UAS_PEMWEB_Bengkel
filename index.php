@@ -46,10 +46,6 @@ $nama_user = isset($_SESSION['nama_user']) ? $_SESSION['nama_user'] : null;
             border-radius: 4px;
         }
 
-        .auth-buttons a.logout {
-            background: #e74c3c;
-        }
-
         header {
             padding: 40px 20px 20px;
             text-align: center;
@@ -94,11 +90,10 @@ $nama_user = isset($_SESSION['nama_user']) ? $_SESSION['nama_user'] : null;
     <h1>Punjung Rejeki Motor</h1>
     <div class="auth-buttons">
         <?php if (!$nama_user): ?>
-            <a href="auth/login.php">Login</a>
-            <a href="auth/register.php">Register</a>
+            <a href="auth/login.php">Masuk</a>
+            <a href="auth/register.php">Daftar</a>
         <?php else: ?>
-            <span style="margin-right: 10px;">👋 <?= htmlspecialchars($nama_user) ?></span>
-            <a href="auth/logout.php" class="logout">Logout</a>
+            <span style="margin-right: 10px;"> <a href="profile.php" style="color: white;"><?= htmlspecialchars($nama_user) ?></a></span>
         <?php endif; ?>
     </div>
 </div>
@@ -108,7 +103,7 @@ $nama_user = isset($_SESSION['nama_user']) ? $_SESSION['nama_user'] : null;
 <?php endif; ?>
 
 <header>
-    <h2>Selamat Datang di Punjung Rejeki Motor</h2>
+    <h2>Selamat Datang di Punjung Rejeki Motor!</h2>
     <p>Layanan Servis Motor & Spare Part Berkualitas</p>
 </header>
 

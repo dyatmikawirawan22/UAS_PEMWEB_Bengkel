@@ -112,9 +112,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             text-decoration: none;
         }
 
-        a:hover {
-            text-decoration: underline;
-        }
     </style>
 </head>
 <body>
@@ -133,7 +130,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <?php endif; ?>
 
     <form method="POST" action="">
-        <input type="text" name="nama" placeholder="Nama Lengkap" required>
+        <input type="text" name="nama" placeholder="Nama" required>
         <input type="email" name="email" placeholder="Email" required>
         <input type="password" name="password" placeholder="Password" required>
         <input type="password" name="konfirmasi" placeholder="Konfirmasi Password" required>

@@ -19,6 +19,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($user && password_verify($password, $user['password_user'])) {
             $_SESSION['id_user'] = $user['id_user'];
             $_SESSION['nama_user'] = $user['nama_user'];
+            $_SESSION['id_user'] = $user['id_user'];
+            $_SESSION['nama_user'] = $user['nama_user'];
+            $_SESSION['role_user'] = $user['role_user'];
             header("Location: ../index.php"); // Arahkan ke halaman utama
             exit;
         } else {
@@ -105,9 +108,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             text-decoration: none;
         }
 
-        a:hover {
-            text-decoration: underline;
-        }
     </style>
 </head>
 <body>
@@ -126,7 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <?php endif; ?>
 
     <?php if (isset($_GET['pesan']) && $_GET['pesan'] == 'berhasil_register'): ?>
-        <p class="info">Registrasi berhasil. Silakan login.</p>
+        <p class="info">Berhasil mendaftarkan akun.</p>
     <?php endif; ?>
 
     <?php if ($pesan): ?>
@@ -139,7 +139,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="submit" value="Masuk">
     </form>
 
-    <p>Belum punya akun? <a href="register.php">Daftar di sini</a></p>
+    <p>Belum punya akun?
+        <a href="register.php">Daftar di sini</a></p>
 </div>
 
 </body>
