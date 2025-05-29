@@ -1,5 +1,6 @@
 <?php
-require '../includes/db.php';
+session_start();
+require '../includes/db.php'; // Pastikan path ini benar
 
 $pesan = '';
 
@@ -10,26 +11,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $konfirmasi = trim($_POST['konfirmasi']);
 
     if ($nama == '' || $email == '' || $password == '' || $konfirmasi == '') {
-        $pesan = "Semua field wajib diisi.";
+        $pesan = "Semua kolom wajib diisi.";
     } elseif ($password !== $konfirmasi) {
-        $pesan = "Password dan konfirmasi tidak cocok.";
+        $pesan = "Konfirmasi password tidak cocok.";
     } else {
-        $stmt = $conn->prepare("SELECT * FROM users WHERE email_user = ?");
+        // Cek apakah email sudah terdaftar
+        $stmt = $conn->prepare("SELECT id_user FROM users WHERE email_user = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
-        $result = $stmt->get_result();
+        $stmt->store_result();
 
-        if ($result->num_rows > 0) {
+        if ($stmt->num_rows > 0) {
             $pesan = "Email sudah terdaftar.";
         } else {
+            // Hash password dan simpan ke database
             $hash = password_hash($password, PASSWORD_DEFAULT);
             $stmt = $conn->prepare("INSERT INTO users (nama_user, email_user, password_user) VALUES (?, ?, ?)");
             $stmt->bind_param("sss", $nama, $email, $hash);
             if ($stmt->execute()) {
-                header("Location: login.php?pesan=daftar_sukses");
+                header("Location: login.php?pesan=berhasil_register");
                 exit;
             } else {
-                $pesan = "Gagal mendaftar. Silakan coba lagi.";
+                $pesan = "Registrasi gagal. Silakan coba lagi.";
             }
         }
     }
@@ -45,11 +48,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         body {
             font-family: Arial, sans-serif;
             background: #f5f5f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            margin: 0;
+            padding: 0;
         }
+
+        .topbar {
+            background-color: #2c3e50;
+            padding: 15px 20px;
+            text-align: center;
+        }
+
+        .title-link {
+            font-size: 24px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
         .register-container {
             background: #fff;
             padding: 30px;
@@ -58,16 +73,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             width: 100%;
             max-width: 400px;
             text-align: center;
+            margin: 40px auto;
         }
+
         h2 {
             margin-bottom: 20px;
         }
-        input[type="text"], input[type="email"], input[type="password"] {
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
             width: 100%;
             padding: 10px;
             margin: 8px 0;
             box-sizing: border-box;
         }
+
         input[type="submit"] {
             width: 100%;
             padding: 10px;
@@ -76,17 +97,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             color: white;
             cursor: pointer;
         }
+
         input[type="submit"]:hover {
             background: #218838;
         }
+
         .alert {
             color: red;
             margin-bottom: 10px;
         }
+
         a {
             color: #007bff;
             text-decoration: none;
         }
+
         a:hover {
             text-decoration: underline;
         }
@@ -94,22 +119,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 
+<!-- Header -->
+<div class="topbar">
+    <a href="../index.php" class="title-link">Punjung Rejeki Motor</a>
+</div>
+
+<!-- Form Register -->
 <div class="register-container">
     <h2>Daftar Akun Baru</h2>
 
     <?php if ($pesan): ?>
-        <p class="alert"><?= $pesan ?></p>
+        <p class="alert"><?= htmlspecialchars($pesan) ?></p>
     <?php endif; ?>
 
     <form method="POST" action="">
-        <input type="text" name="nama" placeholder="Nama" required><br>
-        <input type="email" name="email" placeholder="Email" required><br>
-        <input type="password" name="password" placeholder="Password" required><br>
-        <input type="password" name="konfirmasi" placeholder="Konfirmasi Password" required><br>
+        <input type="text" name="nama" placeholder="Nama Lengkap" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <input type="password" name="konfirmasi" placeholder="Konfirmasi Password" required>
         <input type="submit" value="Daftar">
     </form>
 
-    <p>Sudah punya akun? <a href="login.php">Login di sini</a></p>
+    <p>Sudah punya akun? <a href="login.php">Masuk di sini</a></p>
 </div>
 
 </body>
