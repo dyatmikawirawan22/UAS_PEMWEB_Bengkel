@@ -78,19 +78,7 @@ $info = $_GET['info'] ?? '';
         form {
             margin-top: 20px;
         }
-        input[type="hapus"] {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 10px;
-            width: 96%;
-            margin-top: 10px;
-            cursor: pointer;
-            text-align: center;
-        }
-        input[type="hapus"]:hover {
-            background: #c0392b;
-        }
+
     </style>
 </head>
 <body>
@@ -127,7 +115,7 @@ $info = $_GET['info'] ?? '';
 
         <!-- Hapus Akun -->
         <form method="POST" action="profile/hapus_akun.php" onclick="return confirm('Yakin ingin menghapus akun?');">
-            <input type="hapus" value="Hapus Akun" >
+            <input type="submit" name="hapus" value="Hapus Akun" class="hapus-btn" style="color: white; background: #e74c3c;">
         </form>
     <?php endif; ?>
 </div>
