@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../includes/db.php'; // Pastikan path ini benar
+require 'db.php'; // Pastikan path ini benar
 
 $pesan = '';
 
@@ -118,7 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!-- Header -->
 <div class="topbar">
-    <a href="../index.php" class="title-link">Punjung Rejeki Motor</a>
+    <a href="index.php" class="title-link">Punjung Rejeki Motor</a>
 </div>
 
 <!-- Form Register -->
