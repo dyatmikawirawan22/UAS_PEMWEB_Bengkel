@@ -22,6 +22,16 @@ SET time_zone = "+00:00";
 --
 
 -- --------------------------------------------------------
+CREATE TABLE `users` (
+  `id_user` int(11) NOT NULL AUTO_INCREMENT,
+  `nama_user` varchar(100) NOT NULL,
+  `email_user` varchar(100) NOT NULL,
+  `password_user` varchar(255) NOT NULL,
+  `role_user` varchar(20) DEFAULT 'customer',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id_user`),
+  UNIQUE KEY `email_user` (`email_user`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Table structure for table `booking`
