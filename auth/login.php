@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../includes/db.php'; // Pastikan path sesuai
+require 'db.php'; // Pastikan path sesuai
 
 $pesan = '';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -19,10 +19,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($user && password_verify($password, $user['password_user'])) {
             $_SESSION['id_user'] = $user['id_user'];
             $_SESSION['nama_user'] = $user['nama_user'];
-            $_SESSION['id_user'] = $user['id_user'];
-            $_SESSION['nama_user'] = $user['nama_user'];
             $_SESSION['role_user'] = $user['role_user'];
-            header("Location: ../index.php"); // Arahkan ke halaman utama
+            header("Location: index.php"); // Perbaikan: tambahkan Location
             exit;
         } else {
             $pesan = 'Email atau password salah.';
@@ -36,112 +34,237 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Login - Punjung Rejeki Motor</title>
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #f39c12;
+            --secondary: #e74c3c;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            margin: 0;
-            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f9f9f9;
+            background-image: url('https://images.unsplash.com/photo-1601758003122-53c40e686a19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
-
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: -1;
+        }
+        
         .topbar {
-            background-color: #2c3e50;
-            padding: 15px 20px;
-            text-align: center;
-        }
-
-        .title-link {
-            font-size: 24px;
+            background: linear-gradient(135deg, var(--dark) 0%, #1a252f 100%);
             color: white;
-            text-decoration: none;
-            font-weight: bold;
+            padding: 15px 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-bottom: 3px solid var(--primary);
         }
-
-        .login-container {
-            background: #fff;
-            padding: 30px;
+        
+        .logo {
+            font-family: 'Bungee', cursive;
+            font-size: 1.8rem;
+            color: var(--primary);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .logo span {
+            color: var(--secondary);
+        }
+        
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-left: 5px solid var(--primary);
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
+            margin: auto;
+            padding: 40px;
+        }
+        
+        .login-header {
             text-align: center;
-            margin: 40px auto;
+            margin-bottom: 30px;
         }
-
-        h2 {
+        
+        .login-header i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .login-header h2 {
+            font-family: 'Bungee', cursive;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+        
+        .form-control {
+            height: 50px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            padding-left: 15px;
             margin-bottom: 20px;
+            transition: all 0.3s;
         }
-
-        input[type="text"],
-        input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            box-sizing: border-box;
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.25rem rgba(243, 156, 18, 0.25);
         }
-
-        input[type="submit"] {
-            width: 100%;
-            padding: 10px;
-            background: #007bff;
+        
+        .btn-login {
+            background: linear-gradient(45deg, var(--primary), #f1c40f);
             border: none;
             color: white;
-            cursor: pointer;
+            font-weight: bold;
+            padding: 12px;
+            border-radius: 50px;
+            width: 100%;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
         }
-
-        input[type="submit"]:hover {
-            background: #0056b3;
+        
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
         }
-
+        
         .alert {
-            color: red;
-            margin-bottom: 10px;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-left: 4px solid transparent;
         }
-
-        .info {
-            color: green;
-            margin-bottom: 10px;
+        
+        .alert-danger {
+            background-color: rgba(231, 76, 60, 0.1);
+            border-left-color: var(--secondary);
+            color: #721c24;
         }
-
-        a {
-            color: #007bff;
+        
+        .alert-success {
+            background-color: rgba(46, 204, 113, 0.1);
+            border-left-color: #2ecc71;
+            color: #155724;
+        }
+        
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--dark);
+        }
+        
+        .register-link a {
+            color: var(--primary);
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .register-link a:hover {
+            color: var(--secondary);
             text-decoration: none;
         }
-
     </style>
 </head>
 <body>
 
-<!-- Header -->
-<div class="topbar">
-    <a href="../index.php" class="title-link">Punjung Rejeki Motor</a>
+<!-- Top Bar -->
+<div class="topbar d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center">
+        <i class="fas fa-motorcycle me-3" style="font-size: 2rem; color: var(--primary);"></i>
+        <h1 class="logo mb-0">Punjung <span>Rejeki</span> Motor</h1>
+    </div>
+    <div class="auth-buttons d-flex gap-3">
+        <a href="register.php" style="color: white; background: var(--secondary);"><i class="fas fa-user-plus me-2"></i>Daftar</a>
+    </div>
 </div>
 
-<!-- Form login -->
-<div class="login-container">
-    <h2>Masuk ke Punjung Rejeki Motor</h2>
+<!-- Login Form -->
+<div class="container my-auto">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="login-card">
+                <div class="login-header">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <h2>MASUK KE AKUN ANDA</h2>
+                    <p>Silahkan masuk untuk mengakses layanan bengkel kami</p>
+                </div>
 
-    <?php if (isset($_GET['pesan']) && $_GET['pesan'] == 'logout'): ?>
-        <p class="info">Anda berhasil logout.</p>
-    <?php endif; ?>
+                <?php if (isset($_GET['pesan']) && $_GET['pesan'] == 'logout'): ?>
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle me-2"></i> Anda berhasil logout.
+                    </div>
+                <?php endif; ?>
 
-    <?php if (isset($_GET['pesan']) && $_GET['pesan'] == 'berhasil_register'): ?>
-        <p class="info">Berhasil mendaftarkan akun.</p>
-    <?php endif; ?>
+                <?php if (isset($_GET['pesan']) && $_GET['pesan'] == 'berhasil_register'): ?>
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle me-2"></i> Berhasil mendaftarkan akun.
+                    </div>
+                <?php endif; ?>
 
-    <?php if ($pesan): ?>
-        <p class="alert"><?= htmlspecialchars($pesan) ?></p>
-    <?php endif; ?>
+                <?php if ($pesan): ?>
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-circle me-2"></i> <?= htmlspecialchars($pesan) ?>
+                    </div>
+                <?php endif; ?>
 
-    <form method="POST" action="">
-        <input type="text" name="email" placeholder="Email" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <input type="submit" value="Masuk">
-    </form>
+                <form method="POST" action="">
+                    <div class="mb-3">
+                        <input type="email" class="form-control" name="email" placeholder="Alamat Email" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="password" class="form-control" name="password" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="btn btn-login">
+                        <i class="fas fa-sign-in-alt me-2"></i> MASUK
+                    </button>
+                </form>
 
-    <p>Belum punya akun?
-        <a href="register.php">Daftar di sini</a></p>
+                <div class="register-link">
+                    Belum punya akun? <a href="register.php">Daftar sekarang</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Animasi saat hover tombol
+    document.querySelector('.btn-login').addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-3px)';
+        this.style.boxShadow = '0 8px 15px rgba(0,0,0,0.2)';
+    });
+    
+    document.querySelector('.btn-login').addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0)';
+        this.style.boxShadow = 'none';
+    });
+</script>
 
 </body>
 </html>
