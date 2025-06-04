@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 28, 2025 at 01:23 AM
--- Server version: 10.4.32-MariaDB
+-- Generation Time: Jun 04, 2025 at 06:58 AM
+-- Server version: 8.4.5
 -- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -22,29 +22,24 @@ SET time_zone = "+00:00";
 --
 
 -- --------------------------------------------------------
-CREATE TABLE `users` (
-  `id_user` int(11) NOT NULL AUTO_INCREMENT,
-  `nama_user` varchar(100) NOT NULL,
-  `email_user` varchar(100) NOT NULL,
-  `password_user` varchar(255) NOT NULL,
-  `role_user` varchar(20) DEFAULT 'customer',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id_user`),
-  UNIQUE KEY `email_user` (`email_user`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Table structure for table `booking`
+-- Table structure for table `bookings`
 --
 
-CREATE TABLE `booking` (
-  `id_booking` int(11) NOT NULL,
-  `id_user` int(11) DEFAULT NULL,
-  `jenis_kendaraan_booking` varchar(100) DEFAULT NULL,
-  `tanggal_booking` date DEFAULT NULL,
-  `waktu_booking` time DEFAULT NULL,
-  `jenis_servis_booking` varchar(100) DEFAULT NULL,
-  `status_booking` enum('Menunggu','Diterima','Selesai') DEFAULT 'Menunggu'
+CREATE TABLE `bookings` (
+  `id_booking` int NOT NULL,
+  `id_user` int NOT NULL,
+  `jenis_kendaraan_booking` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `tipe_kendaraan_booking` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `nopol_booking` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `tahun_booking` year NOT NULL,
+  `jenis_servis_booking` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `keluhan_booking` text COLLATE utf8mb4_general_ci,
+  `tanggal_booking` date NOT NULL,
+  `waktu_booking` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `status_booking` varchar(50) COLLATE utf8mb4_general_ci DEFAULT 'Menunggu Konfirmasi',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -54,12 +49,12 @@ CREATE TABLE `booking` (
 --
 
 CREATE TABLE `chat` (
-  `id_chat` int(11) NOT NULL,
-  `pengirim_chat` int(11) DEFAULT NULL,
-  `penerima_chat` int(11) DEFAULT NULL,
-  `pesan_chat` text DEFAULT NULL,
-  `waktu_chat` timestamp NOT NULL DEFAULT current_timestamp(),
-  `status_chat` enum('terbaca','baru') DEFAULT 'baru'
+  `id_chat` int NOT NULL,
+  `pengirim_chat` int DEFAULT NULL,
+  `penerima_chat` int DEFAULT NULL,
+  `pesan_chat` text COLLATE utf8mb4_general_ci,
+  `waktu_chat` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status_chat` enum('terbaca','baru') COLLATE utf8mb4_general_ci DEFAULT 'baru'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -69,9 +64,9 @@ CREATE TABLE `chat` (
 --
 
 CREATE TABLE `estimasi_servis` (
-  `id_estimasi` int(11) NOT NULL,
-  `jenis_servis_estimasi` varchar(100) DEFAULT NULL,
-  `estimasi_waktu_estimasi` int(11) DEFAULT NULL,
+  `id_estimasi` int NOT NULL,
+  `jenis_servis_estimasi` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `estimasi_waktu_estimasi` int DEFAULT NULL,
   `tarif_per_jam_estimasi` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -82,10 +77,10 @@ CREATE TABLE `estimasi_servis` (
 --
 
 CREATE TABLE `produk` (
-  `id_produk` int(11) NOT NULL,
-  `nama_produk` varchar(100) DEFAULT NULL,
-  `kategori_produk` varchar(50) DEFAULT NULL,
-  `stok_produk` int(11) DEFAULT NULL,
+  `id_produk` int NOT NULL,
+  `nama_produk` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `kategori_produk` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `stok_produk` int DEFAULT NULL,
   `harga_produk` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -96,13 +91,13 @@ CREATE TABLE `produk` (
 --
 
 CREATE TABLE `riwayat_servis` (
-  `id_riwayat` int(11) NOT NULL,
-  `id_user` int(11) DEFAULT NULL,
+  `id_riwayat` int NOT NULL,
+  `id_user` int DEFAULT NULL,
   `tanggal_riwayat` date DEFAULT NULL,
-  `jenis_kendaraan_riwayat` varchar(100) DEFAULT NULL,
-  `keluhan_riwayat` text DEFAULT NULL,
-  `tindakan_riwayat` text DEFAULT NULL,
-  `spare_part_riwayat` text DEFAULT NULL,
+  `jenis_kendaraan_riwayat` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `keluhan_riwayat` text COLLATE utf8mb4_general_ci,
+  `tindakan_riwayat` text COLLATE utf8mb4_general_ci,
+  `spare_part_riwayat` text COLLATE utf8mb4_general_ci,
   `biaya_riwayat` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -113,28 +108,21 @@ CREATE TABLE `riwayat_servis` (
 --
 
 CREATE TABLE `users` (
-  `id_user` int(11) NOT NULL,
-  `nama_user` varchar(100) DEFAULT NULL,
-  `email_user` varchar(100) DEFAULT NULL,
-  `password_user` varchar(255) DEFAULT NULL,
-  `role_user` enum('pelanggan','admin') DEFAULT 'pelanggan'
+  `id_user` int NOT NULL,
+  `nama_user` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `email_user` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `password_user` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `role_user` enum('pelanggan','admin') COLLATE utf8mb4_general_ci DEFAULT 'pelanggan'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id_user`, `nama_user`, `email_user`, `password_user`, `role_user`) VALUES
-(1, 'a', 'a@gmail.com', '$2y$10$mxIR70Xx.uSKGnPixfRtC.AHofK0UoSE23aZ1l59bY810lzKv.kSO', 'pelanggan');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `booking`
+-- Indexes for table `bookings`
 --
-ALTER TABLE `booking`
+ALTER TABLE `bookings`
   ADD PRIMARY KEY (`id_booking`),
   ADD KEY `id_user` (`id_user`);
 
@@ -177,50 +165,50 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT for table `booking`
+-- AUTO_INCREMENT for table `bookings`
 --
-ALTER TABLE `booking`
-  MODIFY `id_booking` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `bookings`
+  MODIFY `id_booking` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `chat`
 --
 ALTER TABLE `chat`
-  MODIFY `id_chat` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_chat` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `estimasi_servis`
 --
 ALTER TABLE `estimasi_servis`
-  MODIFY `id_estimasi` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_estimasi` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `produk`
 --
 ALTER TABLE `produk`
-  MODIFY `id_produk` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_produk` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `riwayat_servis`
 --
 ALTER TABLE `riwayat_servis`
-  MODIFY `id_riwayat` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_riwayat` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_user` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `booking`
+-- Constraints for table `bookings`
 --
-ALTER TABLE `booking`
-  ADD CONSTRAINT `booking_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`);
+ALTER TABLE `bookings`
+  ADD CONSTRAINT `bookings_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `chat`
