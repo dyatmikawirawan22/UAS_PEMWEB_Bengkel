@@ -1,49 +1,34 @@
 <?php
 session_start();
+include '../../includes/db.php'; // Pastikan path-nya sesuai
 
-// Cek apakah user sudah login
-if (!isset($_SESSION['nama_user'])) {
-    header("Location: login.php?pesan=Silahkan login terlebih dahulu");
+if (!isset($_SESSION['id_user'])) {
+    header("Location: ../auth/login.php?pesan=Silakan login terlebih dahulu");
     exit();
 }
 
-// Koneksi ke database (sesuaikan dengan konfigurasi Anda)
-$host = 'localhost';
-$user = 'root';
-$pass = '';
-$db = 'bengkel_motor';
-$conn = new mysqli($host, $user, $pass, $db);
+$id_user = $_SESSION['id_user'];
+$jenis_kendaraan = $_POST['jenis_kendaraan'];
+$tipe = $_POST['tipe'];
+$nopol = $_POST['nopol'];
+$tahun = $_POST['tahun'];
+$jenis_servis = $_POST['jenis_servis'];
+$keluhan = $_POST['keluhan'];
+$tanggal = $_POST['tanggal'];
+$waktu = $_POST['waktu'];
 
-// Cek koneksi
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
-}
+// Set status default booking
+$status = 'Menunggu Konfirmasi';
 
-// Ambil data dari form
-$nama_pemilik = $_SESSION['nama_user'];
-$merk = $conn->real_escape_string($_POST['merk']);
-$tipe = $conn->real_escape_string($_POST['tipe']);
-$nopol = $conn->real_escape_string($_POST['nopol']);
-$tahun = $conn->real_escape_string($_POST['tahun']);
-$jenis_servis = $conn->real_escape_string($_POST['jenis_servis']);
-$keluhan = $conn->real_escape_string($_POST['keluhan']);
-$tanggal = $conn->real_escape_string($_POST['tanggal']);
-$waktu = $conn->real_escape_string($_POST['waktu']);
+$query = mysqli_query($conn, "INSERT INTO bookings 
+    (id_user, jenis_kendaraan_booking, tipe_kendaraan_booking, nopol_booking, tahun_booking, jenis_servis_booking, keluhan_booking, tanggal_booking, waktu_booking, status_booking)
+    VALUES 
+    ('$id_user', '$jenis_kendaraan', '$tipe', '$nopol', '$tahun', '$jenis_servis', '$keluhan', '$tanggal', '$waktu', '$status')");
 
-// Generate nomor booking
-$no_booking = 'PRM-' . date('Ymd') . '-' . strtoupper(substr(uniqid(), -6));
-
-// Simpan ke database
-$sql = "INSERT INTO bookings (no_booking, nama_pemilik, merk, tipe, nopol, tahun, jenis_servis, keluhan, tanggal, waktu, status) 
-        VALUES ('$no_booking', '$nama_pemilik', '$merk', '$tipe', '$nopol', '$tahun', '$jenis_servis', '$keluhan', '$tanggal', '$waktu', 'Menunggu Konfirmasi')";
-
-if ($conn->query($sql) === TRUE) {
-    // Jika berhasil disimpan
-    header("Location: index.php?pesan=Booking berhasil! Nomor booking Anda: $no_booking");
+if ($query) {
+    header("Location: ../../index.php?pesan=Booking berhasil");
+    exit();
 } else {
-    // Jika gagal
-    header("Location: form_booking.php?pesan=Gagal melakukan booking. Silahkan coba lagi.");
+    echo "Gagal melakukan booking: " . mysqli_error($conn);
 }
-
-$conn->close();
 ?>

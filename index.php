@@ -270,6 +270,13 @@ $nama_user = isset($_SESSION['nama_user']) ? $_SESSION['nama_user'] : null;
     </div>
 </div>
 
+<?php if (isset($_GET['pesan'])): ?>
+    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+        <?= htmlspecialchars($_GET['pesan']) ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<?php endif; ?>
+
 <!-- Notifikasi -->
 <?php if (isset($_GET['pesan']) && $_GET['pesan'] == 'logout'): ?>
     <div class="container">

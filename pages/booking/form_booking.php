@@ -205,6 +205,11 @@ if (!$nama_user) {
                                 </select>
                             </div>
                         </div>
+                        <!-- Input Hidden untuk id_user -->
+                        <input type="hidden" name="id_user" value="<?= $_SESSION['id_user'] ?>">
+
+                        <!-- Input Hidden untuk jenis_kendaraan_booking -->
+                        <input type="hidden" name="jenis_kendaraan" value="Motor"> <!-- atau "Mobil" kalau kamu ingin mendukung keduanya -->
                         
                         <div class="text-center mt-4">
                             <button type="submit" class="btn btn-submit">
