@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'db.php'; // Pastikan path sesuai
+require '../includes/db.php'; // Pastikan path sesuai
 
 $pesan = '';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['id_user'] = $user['id_user'];
             $_SESSION['nama_user'] = $user['nama_user'];
             $_SESSION['role_user'] = $user['role_user'];
-            header("Location: index.php"); // Perbaikan: tambahkan Location
+            header("Location: ../index.php"); // Perbaikan: tambahkan Location
             exit;
         } else {
             $pesan = 'Email atau password salah.';
@@ -196,9 +196,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="d-flex align-items-center">
         <i class="fas fa-motorcycle me-3" style="font-size: 2rem; color: var(--primary);"></i>
         <h1 class="logo mb-0">Punjung <span>Rejeki</span> Motor</h1>
-    </div>
-    <div class="auth-buttons d-flex gap-3">
-        <a href="register.php" style="color: white; background: var(--secondary);"><i class="fas fa-user-plus me-2"></i>Daftar</a>
     </div>
 </div>
 

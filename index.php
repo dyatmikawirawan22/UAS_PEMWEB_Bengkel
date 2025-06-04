@@ -261,11 +261,11 @@ $nama_user = isset($_SESSION['nama_user']) ? $_SESSION['nama_user'] : null;
     </div>
     <div class="auth-buttons d-flex gap-3">
         <?php if (!$nama_user): ?>
-            <a href="login.php"><i class="fas fa-sign-in-alt me-2"></i>Masuk</a>
-            <a href="register.php"><i class="fas fa-user-plus me-2"></i>Daftar</a>
+            <a href="auth/login.php"><i class="fas fa-sign-in-alt me-2"></i>Masuk</a>
+            <a href="auth/register.php"><i class="fas fa-user-plus me-2"></i>Daftar</a>
         <?php else: ?>
             <a href="profile.php"><i class="fas fa-user me-2"></i><?= htmlspecialchars($nama_user) ?></a>
-            <a href="logout.php" class="logout-btn"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
+            <a href="auth/logout.php" class="logout-btn"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
         <?php endif; ?>
     </div>
 </div>
@@ -309,12 +309,12 @@ $nama_user = isset($_SESSION['nama_user']) ? $_SESSION['nama_user'] : null;
         <div class="col-md-8">
             <div class="row">
                 <div class="col-6 col-md-4 mb-3">
-                    <a href="form_booking.php" class="btn btn-booking btn-menu">
+                    <a href="pages/booking/form_booking.php" class="btn btn-booking btn-menu">
                         <i class="fas fa-calendar-check me-2"></i> Booking
                     </a>
                 </div>
                 <div class="col-6 col-md-4 mb-3">
-                    <a href="estimasi_biaya.php" class="btn btn-estimasi btn-menu">
+                    <a href="pages/estimasi/estimasi_biaya.php" class="btn btn-estimasi btn-menu">
                         <i class="fas fa-calculator me-2"></i> Estimasi
                     </a>
                 </div>
