@@ -327,12 +327,12 @@ $role_user = $_SESSION['role_user'] ?? '';
                     </a>
                 </div>
                 <div class="col-6 col-md-4 mb-3">
-                    <a href="produk_list.php" class="btn btn-produk btn-menu">
+                    <a href="pages/produk/produk_list.php" class="btn btn-produk btn-menu">
                         <i class="fas fa-cogs me-2"></i> Sparepart
                     </a>
                 </div>
                 <div class="col-6 col-md-6 mb-3">
-                    <a href="riwayat_servis.php" class="btn btn-riwayat btn-menu">
+                    <a href="pages/riwayat/riwayat_servis.php" class="btn btn-riwayat btn-menu">
                         <i class="fas fa-history me-2"></i> Riwayat Servis
                     </a>
                 </div>
