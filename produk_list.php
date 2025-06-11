@@ -1,4 +1,4 @@
-<?php include 'koneksi.php'; 
+<?php include 'include/db.php'; 
 session_start();
 $nama_user = isset($_SESSION['nama_user']) ? $_SESSION['nama_user'] : null;
 ?>
