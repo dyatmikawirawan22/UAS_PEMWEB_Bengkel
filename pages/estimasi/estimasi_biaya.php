@@ -175,11 +175,11 @@ $nama_user = isset($_SESSION['nama_user']) ? $_SESSION['nama_user'] : null;
     </div>
     <div class="auth-buttons d-flex gap-3">
         <?php if (!$nama_user): ?>
-            <a href="login.php"><i class="fas fa-sign-in-alt me-2"></i>Masuk</a>
-            <a href="register.php"><i class="fas fa-user-plus me-2"></i>Daftar</a>
+            <a href="../../auth/login.php"><i class="fas fa-sign-in-alt me-2"></i>Masuk</a>
+            <a href="../../auth/register.php"><i class="fas fa-user-plus me-2"></i>Daftar</a>
         <?php else: ?>
-            <a href="profile.php"><i class="fas fa-user me-2"></i><?= htmlspecialchars($nama_user) ?></a>
-            <a href="logout.php" style="background-color: var(--secondary); color: white;"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
+            <a href="../../profile.php"><i class="fas fa-user me-2"></i><?= htmlspecialchars($nama_user) ?></a>
+            <a href="../../auth/logout.php" style="background-color: var(--secondary); color: white;"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
         <?php endif; ?>
     </div>
 </div>
@@ -258,7 +258,7 @@ $nama_user = isset($_SESSION['nama_user']) ? $_SESSION['nama_user'] : null;
                             <div class="result-amount" id="totalEstimate">Rp 0</div>
                             <p class="mt-2">* Harga dapat berubah setelah pemeriksaan oleh teknisi</p>
                             
-                            <a href="../booking/form_booking.php" class="btn btn-success mt-3">
+                            <a href="../booking/booking.php" class="btn btn-success mt-3">
                                 <i class="fas fa-calendar-check me-2"></i> BOOKING SEKARANG
                             </a>
                         </div>

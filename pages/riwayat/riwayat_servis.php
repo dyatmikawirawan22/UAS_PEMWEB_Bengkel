@@ -163,13 +163,8 @@ $id_user = isset($_SESSION['id_user']) ? $_SESSION['id_user'] : null;
         <h1 class="logo mb-0">Punjung <span>Rejeki</span> Motor</h1>
     </div>
     <div class="auth-buttons d-flex gap-3">
-        <?php if (!$nama_user): ?>
-            <a href="auth/login.php"><i class="fas fa-sign-in-alt me-2"></i>Masuk</a>
-            <a href="auth/register.php"><i class="fas fa-user-plus me-2"></i>Daftar</a>
-        <?php else: ?>
-            <a href="profile.php"><i class="fas fa-user me-2"></i><?= htmlspecialchars($nama_user) ?></a>
-            <a href="auth/logout.php" class="logout-btn"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
-        <?php endif; ?>
+        <a href="../../profile.php"><i class="fas fa-user me-2"></i><?= htmlspecialchars($nama_user) ?></a>
+        <a href="../../auth/logout.php" style="background-color: var(--secondary); color: white;"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
     </div>
 </div>
 

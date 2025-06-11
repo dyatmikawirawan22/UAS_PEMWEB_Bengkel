@@ -310,7 +310,7 @@ $role_user = $_SESSION['role_user'] ?? '';
         <div class="col-md-8">
             <div class="row">
                 <div class="col-6 col-md-4 mb-3">
-                    <a href="pages/booking/form_booking.php" class="btn btn-booking btn-menu">
+                    <a href="pages/booking/booking.php" class="btn btn-booking btn-menu">
                         <i class="fas fa-calendar-check me-2"></i> Booking
                     </a>
                 </div>

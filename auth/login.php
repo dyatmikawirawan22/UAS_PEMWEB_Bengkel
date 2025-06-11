@@ -17,14 +17,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user = $result->fetch_assoc();
 
         if ($user && password_verify($password, $user['password_user'])) {
-            $_SESSION['id_user'] = $user['id_user'];
-            $_SESSION['nama_user'] = $user['nama_user'];
-            $_SESSION['role_user'] = $user['role_user'];
-            header("Location: ../index.php"); // Perbaikan: tambahkan Location
-            exit;
+        $_SESSION['id_user'] = $user['id_user'];
+        $_SESSION['nama_user'] = $user['nama_user'];
+        $_SESSION['role_user'] = $user['role_user'];
+
+        if ($user['role_user'] === 'admin') {
+            header("Location: ../admin/admin_dashboard.php");
+        } else {
+            header("Location: ../index.php");
+        }
+        exit;
         } else {
             $pesan = 'Email atau password salah.';
         }
+
     }
 }
 ?>
