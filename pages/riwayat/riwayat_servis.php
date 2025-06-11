@@ -1,6 +1,11 @@
-<?php include 'includes/db.php'; 
-        include 'auth.php';
+<?php include '../../includes/db.php'; 
 session_start();
+
+if (!isset($_SESSION['id_user'])) {
+    header("Location: ../../auth/login.php?pesan=Silakan login terlebih dahulu");
+    exit();
+}
+
 $nama_user = isset($_SESSION['nama_user']) ? $_SESSION['nama_user'] : null;
 $id_user = isset($_SESSION['id_user']) ? $_SESSION['id_user'] : null;
 
@@ -259,7 +264,7 @@ if ($id_user) {
 </body>
 
 <div>   
-        <a href="index.php" class="btn-primary"><i class="fas fa-home me-1"></i> Kembali ke Beranda</a>
+        <a href="../../index.php" class="btn-primary"><i class="fas fa-home me-1"></i> Kembali ke Beranda</a>
             </div>
 
             </html>

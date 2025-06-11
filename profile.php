@@ -10,7 +10,6 @@ if (!isset($_SESSION['id_user'])) {
 $id_user = $_SESSION['id_user'];
 $role_user = $_SESSION['role_user'];
 
-// Ambil data user
 $stmt = $conn->prepare("SELECT * FROM users WHERE id_user = ?");
 $stmt->bind_param("i", $id_user);
 $stmt->execute();
@@ -20,104 +19,108 @@ $user = $result->fetch_assoc();
 $pesan = $_GET['error'] ?? '';
 $info = $_GET['info'] ?? '';
 ?>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <title>Profil - Punjung Rejeki Motor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f9f9f9;
+        }
         .topbar {
             background-color: #2c3e50;
-            padding: 10px 20px;
+            padding: 15px 30px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            color: white;
         }
-
         .title-link {
             font-size: 24px;
-            color: white;
-            text-decoration: none;
             font-weight: bold;
+            color: #f39c12;
+            text-decoration: none;
         }
-        body {
-            font-family: Arial, sans-serif;
-            background: #f8f9fa;
-            padding: 20px;
+        .logout-link {
+            color: white;
+            background-color: #e74c3c;
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+        .logout-link:hover {
+            background-color: #c0392b;
         }
         .container {
-            max-width: 500px;
-            margin: auto;
+            max-width: 550px;
+            margin: 30px auto;
             background: white;
             padding: 30px;
             border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
         }
         h2 {
             text-align: center;
+            margin-bottom: 20px;
         }
-        .alert { color: red; text-align: center; }
-        .info { color: green; text-align: center; }
-        input[type="text"], input[type="password"] {
-            width: 95%;
-            padding: 10px;
-            margin: 8px 0;
+        .form-label {
+            font-weight: bold;
         }
-        input[type="submit"] {
-            background: #2ecc71;
-            color: white;
+        .btn-danger {
+            background-color: #e74c3c;
             border: none;
-            padding: 10px;
-            width: 100%;
-            margin-top: 10px;
-            cursor: pointer;
         }
-        input[type="submit"]:hover {
-            background: #27ae60;
+        .btn-danger:hover {
+            background-color: #c0392b;
         }
-        form {
-            margin-top: 20px;
-        }
-
     </style>
 </head>
 <body>
 
 <div class="topbar">
     <a href="index.php" class="title-link">Punjung Rejeki Motor</a>
-    <a href="auth/logout.php" style="color: white; background: #e74c3c; padding: 6px 12px; text-decoration: none; border-radius: 4px; margin-left: 10px;">Keluar</a>
+    <a href="auth/logout.php" class="logout-link"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
 </div>
 
 <div class="container">
     <h2>Profil Anda</h2>
 
-    <?php if ($pesan): ?><p class="alert"><?= htmlspecialchars($pesan) ?></p><?php endif; ?>
-    <?php if ($info): ?><p class="info"><?= htmlspecialchars($info) ?></p><?php endif; ?>
+    <?php if ($pesan): ?>
+        <div class="alert alert-danger"><?= htmlspecialchars($pesan) ?></div>
+    <?php endif; ?>
+    <?php if ($info): ?>
+        <div class="alert alert-success"><?= htmlspecialchars($info) ?></div>
+    <?php endif; ?>
 
     <p><strong>Nama:</strong> <?= htmlspecialchars($user['nama_user']) ?></p>
     <p><strong>Email:</strong> <?= htmlspecialchars($user['email_user']) ?></p>
+    <p><strong>Role:</strong> <?= htmlspecialchars($user['role_user']) ?></p>
 
     <?php if ($role_user === 'pelanggan'): ?>
-        <!-- Ubah Nama -->
-        <form method="POST" action="profile/ubah_nama.php">
-            <label>Ubah Nama</label>
-            <input type="text" name="nama" value="<?= htmlspecialchars($user['nama_user']) ?>" required>
-            <input type="submit" value="Simpan Nama">
+        <form action="profile/ubah_nama.php" method="POST">
+            <label class="form-label">Ubah Nama</label>
+            <input type="text" name="nama" class="form-control mb-3" value="<?= htmlspecialchars($user['nama_user']) ?>" required>
+            <button type="submit" class="btn btn-warning w-100 mb-4">Simpan Nama</button>
         </form>
 
-        <!-- Ubah Password -->
-        <form method="POST" action="profile/ubah_password.php">
-            <label>Ubah Password</label>
-            <input type="password" name="password" placeholder="Password baru" required>
-            <input type="password" name="konfirmasi" placeholder="Konfirmasi password baru" required>
-            <input type="submit" value="Simpan Password">
+        <form action="profile/ubah_password.php" method="POST">
+            <label class="form-label">Ubah Password</label>
+            <input type="password" name="password" class="form-control mb-2" placeholder="Password baru" required>
+            <input type="password" name="konfirmasi" class="form-control mb-3" placeholder="Konfirmasi password baru" required>
+            <button type="submit" class="btn btn-warning w-100 mb-4">Simpan Password</button>
         </form>
 
-        <!-- Hapus Akun -->
-        <form method="POST" action="profile/hapus_akun.php" onclick="return confirm('Yakin ingin menghapus akun?');">
-            <input type="submit" name="hapus" value="Hapus Akun" class="hapus-btn" style="color: white; background: #e74c3c;">
+        <form action="profile/hapus_akun.php" method="POST" onsubmit="return confirm('Yakin ingin menghapus akun ini?');">
+            <button type="submit" name="hapus" class="btn btn-danger w-100">Hapus Akun</button>
         </form>
+    <?php else: ?>
+        <div class="alert alert-info mt-4">Admin tidak dapat mengubah profil.</div>
     <?php endif; ?>
 </div>
+
 </body>
 </html>

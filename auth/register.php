@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../includes/db.php'; // Pastikan path ini benar
+require '../includes/db.php';
 
 $pesan = '';
 
@@ -15,7 +15,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif ($password !== $konfirmasi) {
         $pesan = "Konfirmasi password tidak cocok.";
     } else {
-        // Cek apakah email sudah terdaftar
         $stmt = $conn->prepare("SELECT id_user FROM users WHERE email_user = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
@@ -24,9 +23,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($stmt->num_rows > 0) {
             $pesan = "Email sudah terdaftar.";
         } else {
-            // Hash password dan simpan ke database
             $hash = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $conn->prepare("INSERT INTO users (nama_user, email_user, password_user) VALUES (?, ?, ?)");
+            $stmt = $conn->prepare("INSERT INTO users (nama_user, email_user, password_user, role_user) VALUES (?, ?, ?, 'pelanggan')");
             $stmt->bind_param("sss", $nama, $email, $hash);
             if ($stmt->execute()) {
                 header("Location: login.php?pesan=berhasil_register");
@@ -44,101 +42,189 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Daftar - Punjung Rejeki Motor</title>
+    <!-- Bootstrap & Fonts -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #f39c12;
+            --secondary: #e74c3c;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            margin: 0;
-            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f9f9f9;
+            background-image: url('https://images.unsplash.com/photo-1601758003122-53c40e686a19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: -1;
         }
 
         .topbar {
-            background-color: #2c3e50;
-            padding: 15px 20px;
-            text-align: center;
-        }
-
-        .title-link {
-            font-size: 24px;
+            background: linear-gradient(135deg, var(--dark) 0%, #1a252f 100%);
             color: white;
-            text-decoration: none;
-            font-weight: bold;
+            padding: 15px 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-bottom: 3px solid var(--primary);
         }
 
-        .register-container {
-            background: #fff;
-            padding: 30px;
+        .logo {
+            font-family: 'Bungee', cursive;
+            font-size: 1.8rem;
+            color: var(--primary);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .logo span {
+            color: var(--secondary);
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-left: 5px solid var(--primary);
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
+            margin: auto;
+            padding: 40px;
+        }
+
+        .login-header {
             text-align: center;
-            margin: 40px auto;
+            margin-bottom: 30px;
         }
 
-        h2 {
-            margin-bottom: 20px;
+        .login-header i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 15px;
         }
 
-        input[type="text"],
-        input[type="email"],
-        input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            box-sizing: border-box;
-        }
-
-        input[type="submit"] {
-            width: 100%;
-            padding: 10px;
-            background: #28a745;
-            border: none;
-            color: white;
-            cursor: pointer;
-        }
-
-        input[type="submit"]:hover {
-            background: #218838;
-        }
-
-        .alert {
-            color: red;
+        .login-header h2 {
+            font-family: 'Bungee', cursive;
+            color: var(--dark);
             margin-bottom: 10px;
         }
 
-        a {
-            color: #007bff;
-            text-decoration: none;
+        .form-control {
+            height: 50px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            padding-left: 15px;
+            margin-bottom: 20px;
         }
 
+        .btn-login {
+            background: linear-gradient(45deg, var(--primary), #f1c40f);
+            border: none;
+            color: white;
+            font-weight: bold;
+            padding: 12px;
+            border-radius: 50px;
+            width: 100%;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+
+        .alert {
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .alert-danger {
+            background-color: rgba(231, 76, 60, 0.1);
+            border-left: 4px solid var(--secondary);
+            color: #721c24;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--dark);
+        }
+
+        .register-link a {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .register-link a:hover {
+            color: var(--secondary);
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
 
-<!-- Header -->
-<div class="topbar">
-    <a href="../index.php" class="title-link">Punjung Rejeki Motor</a>
+<!-- Top Bar -->
+<div class="topbar d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center">
+        <i class="fas fa-motorcycle me-3" style="font-size: 2rem; color: var(--primary);"></i>
+        <h1 class="logo mb-0">Punjung <span>Rejeki</span> Motor</h1>
+    </div>
 </div>
 
-<!-- Form Register -->
-<div class="register-container">
-    <h2>Daftar Akun Baru</h2>
+<!-- Register Form -->
+<div class="container my-auto">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="login-card">
+                <div class="login-header">
+                    <i class="fas fa-user-plus"></i>
+                    <h2>DAFTAR AKUN BARU</h2>
+                    <p>Silahkan isi data untuk membuat akun pelanggan</p>
+                </div>
 
-    <?php if ($pesan): ?>
-        <p class="alert"><?= htmlspecialchars($pesan) ?></p>
-    <?php endif; ?>
+                <?php if ($pesan): ?>
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-circle me-2"></i> <?= htmlspecialchars($pesan) ?>
+                    </div>
+                <?php endif; ?>
 
-    <form method="POST" action="">
-        <input type="text" name="nama" placeholder="Nama" required>
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <input type="password" name="konfirmasi" placeholder="Konfirmasi Password" required>
-        <input type="submit" value="Daftar">
-    </form>
+                <form method="POST" action="">
+                    <input type="text" class="form-control" name="nama" placeholder="Nama Lengkap" required>
+                    <input type="email" class="form-control" name="email" placeholder="Email" required>
+                    <input type="password" class="form-control" name="password" placeholder="Password" required>
+                    <input type="password" class="form-control" name="konfirmasi" placeholder="Konfirmasi Password" required>
+                    <button type="submit" class="btn btn-login">
+                        <i class="fas fa-user-plus me-2"></i> DAFTAR
+                    </button>
+                </form>
 
-    <p>Sudah punya akun? <a href="login.php">Masuk di sini</a></p>
+                <div class="register-link">
+                    Sudah punya akun? <a href="login.php">Masuk di sini</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

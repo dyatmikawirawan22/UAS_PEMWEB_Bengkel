@@ -285,13 +285,6 @@ $role_user = $_SESSION['role_user'] ?? '';
     </div>
 <?php endif; ?>
 
-<!-- Greeting -->
-<?php if ($nama_user): ?>
-    <div class="container greeting">
-        Selamat datang kembali, <span><?= htmlspecialchars($nama_user) ?></span>! Motor Anda butuh perawatan?
-    </div>
-<?php endif; ?>
-
 <!-- Promo Banner -->
 <div class="container">
     <div class="promo-banner">
