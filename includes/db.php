@@ -5,7 +5,7 @@ $password = "";            // kosongkan jika tidak ada password
 $database = "bengkel_sistem"; // nama database
 
 // Buat koneksi
-$conn = mysqli_connect($host, $user, $password, $database);
+$conn = mysqli_connect("localhost", "root", "", "bengkel_sistem");
 
 // Cek koneksi
 if (!$conn) {
