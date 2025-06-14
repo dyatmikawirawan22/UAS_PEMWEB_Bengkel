@@ -89,6 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             font-size: 1.8rem;
             color: var(--primary);
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-decoration: none;
         }
 
         .logo span {
@@ -184,7 +185,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div class="topbar d-flex justify-content-between align-items-center">
     <div class="d-flex align-items-center">
         <i class="fas fa-motorcycle me-3" style="font-size: 2rem; color: var(--primary);"></i>
-        <h1 class="logo mb-0">Punjung <span>Rejeki</span> Motor</h1>
+        <a href="../index.php" class="logo mb-0">Punjung <span>Rejeki</span> Motor</a>
     </div>
 </div>
 

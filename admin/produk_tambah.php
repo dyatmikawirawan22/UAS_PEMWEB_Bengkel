@@ -46,7 +46,7 @@ $nama_user = $_SESSION['nama_user'];
             content: '';
             position: absolute;
             top: 0; left: 0;
-            width: 100%; height: 100%;
+            width: 100%; height: 200%;
             background-color: rgba(0,0,0,0.7);
             z-index: -1;
         }
@@ -64,6 +64,33 @@ $nama_user = $_SESSION['nama_user'];
         .logo span {
             color: var(--secondary);
         }
+        .topbar .auth-buttons a {
+            color: white;
+            background: var(--primary);
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .topbar .auth-buttons a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+            background: transparent;
+            border-color: var(--primary);
+        }
+        
+        .topbar .auth-buttons .logout-btn {
+            background: var(--secondary);
+        }
+        
+        .topbar .auth-buttons .logout-btn:hover {
+            background: transparent;
+            border-color: var(--secondary);
+        }
         .form-container {
             max-width: 600px;
             margin: 50px auto;
@@ -77,14 +104,13 @@ $nama_user = $_SESSION['nama_user'];
 <div class="topbar d-flex justify-content-between align-items-center">
     <div class="d-flex align-items-center">
         <i class="fas fa-motorcycle me-3" style="font-size: 2rem; color: var(--primary);"></i>
-        <h1 class="logo mb-0">Punjung <span>Rejeki</span> Motor</h1>
+        <a href="admin_dashboard.php" class="logo mb-0 text-decoration-none">Punjung <span>Rejeki</span> Motor</a>
     </div>
-    <div class="auth-buttons">
-        <a href="../profile.php"><i class="fas fa-user me-2"></i><?= htmlspecialchars($nama_user) ?></a>
-        <a href="../auth/logout.php" class="btn btn-danger">Logout</a>
+    <div class="auth-buttons d-flex gap-3">
+        <a ><i class="fas fa-user me-2"></i><?= htmlspecialchars($nama_user) ?></a>
+        <a href="../../auth/logout.php" style="background-color: var(--secondary); color: white;"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
     </div>
 </div>
-
 <div class="form-container">
     <h3 class="mb-4">Tambah Produk Baru</h3>
     <?php if ($pesan): ?>
@@ -108,7 +134,6 @@ $nama_user = $_SESSION['nama_user'];
             <input type="number" name="harga" class="form-control" required>
         </div>
         <button type="submit" class="btn btn-primary">Tambah Produk</button>
-        <a href="admin_dashboard.php" class="btn btn-secondary">Kembali</a>
     </form>
 </div>
 </body>

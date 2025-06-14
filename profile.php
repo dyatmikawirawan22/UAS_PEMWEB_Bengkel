@@ -24,20 +24,69 @@ $info = $_GET['info'] ?? '';
 <head>
     <meta charset="UTF-8">
     <title>Profil - Punjung Rejeki Motor</title>
+    <!-- Bootstrap 5 CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #f39c12;
+            --secondary: #e74c3c;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+        }
         body {
             font-family: 'Roboto', sans-serif;
             background-color: #f9f9f9;
         }
         .topbar {
-            background-color: #2c3e50;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background: linear-gradient(135deg, var(--dark) 0%, #1a252f 100%);
             color: white;
+            padding: 15px 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .logo {
+            font-family: 'Bungee', cursive;
+            font-size: 1.8rem;
+            color: var(--primary);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-decoration: none;
+        }
+        
+        .logo span {
+            color: var(--secondary);
+        }
+        
+        .topbar .auth-buttons a {
+            color: white;
+            background: var(--primary);
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .topbar .auth-buttons a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+            background: transparent;
+            border-color: var(--primary);
+        }
+        
+        .topbar .auth-buttons .logout-btn {
+            background: var(--secondary);
+        }
+        
+        .topbar .auth-buttons .logout-btn:hover {
+            background: transparent;
+            border-color: var(--secondary);
         }
         .title-link {
             font-size: 24px;
@@ -81,9 +130,14 @@ $info = $_GET['info'] ?? '';
 </head>
 <body>
 
-<div class="topbar">
-    <a href="index.php" class="title-link">Punjung Rejeki Motor</a>
-    <a href="auth/logout.php" class="logout-link"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
+<div class="topbar d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center">
+        <i class="fas fa-motorcycle me-3" style="font-size: 2rem; color: var(--primary);"></i>
+        <a href="index.php" class="logo mb-0">Punjung <span>Rejeki</span> Motor</a>
+    </div>
+     <div class="auth-buttons d-flex gap-3">
+        <a href="auth/logout.php" class="logout-btn"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
+    </div>
 </div>
 
 <div class="container">

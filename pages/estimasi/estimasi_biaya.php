@@ -61,6 +61,54 @@ $nama_user = isset($_SESSION['nama_user']) ? $_SESSION['nama_user'] : null;
         .logo span {
             color: var(--secondary);
         }
+
+        .topbar {
+            background: linear-gradient(135deg, var(--dark) 0%, #1a252f 100%);
+            color: white;
+            padding: 15px 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .logo {
+            font-family: 'Bungee', cursive;
+            font-size: 1.8rem;
+            color: var(--primary);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-decoration: none;
+        }
+        
+        .logo span {
+            color: var(--secondary);
+        }
+        
+        .topbar .auth-buttons a {
+            color: white;
+            background: var(--primary);
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .topbar .auth-buttons a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+            background: transparent;
+            border-color: var(--primary);
+        }
+        
+        .topbar .auth-buttons .logout-btn {
+            background: var(--secondary);
+        }
+        
+        .topbar .auth-buttons .logout-btn:hover {
+            background: transparent;
+            border-color: var(--secondary);
+        }
         
         .estimasi-card {
             background: rgba(255, 255, 255, 0.95);
@@ -171,7 +219,7 @@ $nama_user = isset($_SESSION['nama_user']) ? $_SESSION['nama_user'] : null;
 <div class="topbar d-flex justify-content-between align-items-center">
     <div class="d-flex align-items-center">
         <i class="fas fa-motorcycle me-3" style="font-size: 2rem; color: var(--primary);"></i>
-        <h1 class="logo mb-0">Punjung <span>Rejeki</span> Motor</h1>
+        <a href="../../index.php" class="logo mb-0">Punjung <span>Rejeki</span> Motor</a>
     </div>
     <div class="auth-buttons d-flex gap-3">
         <?php if (!$nama_user): ?>
@@ -247,9 +295,6 @@ $nama_user = isset($_SESSION['nama_user']) ? $_SESSION['nama_user'] : null;
                         <button id="btnCalculate" class="btn btn-calculate" onclick="calculateEstimate()">
                             <i class="fas fa-calculator me-2"></i> HITUNG ESTIMASI
                         </button>
-                        <a href="../../index.php" class="btn btn-secondary ms-2">
-                                <i class="fas fa-arrow-left me-2"></i> KEMBALI
-                            </a>
                     </div>
                     
                     <div id="resultContainer" class="result-card" style="display: none;">

@@ -31,20 +31,67 @@ $nama_user = isset($_SESSION['nama_user']) ? $_SESSION['nama_user'] : null;
             --light: #ecf0f1;
         }
 
-        .topbar {
-            background: linear-gradient(135deg, var(--dark) 0%, #1a252f 100%);
-            color: white;
-            padding: 15px 30px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            border-bottom: 3px solid var(--primary);
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f9f9f9;
+            background-image: url('https://images.unsplash.com/photo-1601758003122-53c40e686a19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;           
         }
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', sans-serif;
-            background: url('https://images.unsplash.com/photo-1589927986089-35812388d1e3') no-repeat center center fixed;
-            background-size: cover;
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 150%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: -1;
+        }
+
+        .topbar {
+            background: linear-gradient(135deg, var(--dark), #1a252f);
+            color: white;
+            padding: 15px 30px;
+            border-bottom: 3px solid var(--primary);
+        }
+        .logo {
+            font-family: 'Bungee', cursive;
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+        .logo span {
+            color: var(--secondary);
+        }
+        .topbar .auth-buttons a {
+            color: white;
+            background: var(--primary);
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .topbar .auth-buttons a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+            background: transparent;
+            border-color: var(--primary);
+        }
+        
+        .topbar .auth-buttons .logout-btn {
+            background: var(--secondary);
+        }
+        
+        .topbar .auth-buttons .logout-btn:hover {
+            background: transparent;
+            border-color: var(--secondary);
         }
 
         .container {
@@ -110,48 +157,12 @@ $nama_user = isset($_SESSION['nama_user']) ? $_SESSION['nama_user'] : null;
         transition: background-color 0.3s ease, transform 0.3s ease;
         z-index: 999;
         }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f9f9f9;
-            background-image: url('https://images.unsplash.com/photo-1601758003122-53c40e686a19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            position: relative;           
+        .bg-success {
+        background-color: #28a745;
         }
-
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 133%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: -1;
-            background-size: auto;
-        }
-
-        .topbar {
-            background: linear-gradient(135deg, var(--dark) 0%, #1a252f 100%);
-            color: white;
-            padding: 15px 30px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            border-bottom: 3px solid var(--primary);
-        }
-        
-        .logo {
-            font-family: 'Bungee', cursive;
-            font-size: 1.8rem;
-            color: var(--primary);
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .logo span {
-            color: var(--secondary);
-        }
-        
+        .bg-danger {
+        background-color: #dc3545;
+        } 
                     
     </style>
 </head>
@@ -160,7 +171,7 @@ $nama_user = isset($_SESSION['nama_user']) ? $_SESSION['nama_user'] : null;
 <div class="topbar d-flex justify-content-between align-items-center">
     <div class="d-flex align-items-center">
         <i class="fas fa-motorcycle me-3" style="font-size: 2rem; color: var(--primary);"></i>
-        <h1 class="logo mb-0">Punjung <span>Rejeki</span> Motor</h1>
+        <a href="../../index.php" class="logo mb-0 text-decoration-none">Punjung <span>Rejeki</span> Motor</a>
     </div>
     <div class="auth-buttons d-flex gap-3">
         <a href="../../profile.php"><i class="fas fa-user me-2"></i><?= htmlspecialchars($nama_user) ?></a>
@@ -193,7 +204,13 @@ $nama_user = isset($_SESSION['nama_user']) ? $_SESSION['nama_user'] : null;
                     <td><?= $row["id_produk"]; ?></td>
                     <td><?= $row["nama_produk"]; ?></td>
                     <td><?= $row["kategori_produk"]; ?></td>
-                    <td><span class="badge-stok"><?= $row["stok_produk"]; ?></span></td>
+                    <td>
+                        <?php if ($row["stok_produk"] > 0): ?>
+                            <span class="badge-stok bg-success">Ada</span>
+                        <?php else: ?>
+                            <span class="badge-stok bg-danger">Habis</span>
+                        <?php endif; ?>
+                    </td>
                     <td>Rp <?= number_format($row["harga_produk"], 0, ',', '.'); ?></td>
                 </tr>
             <?php
@@ -211,9 +228,5 @@ $nama_user = isset($_SESSION['nama_user']) ? $_SESSION['nama_user'] : null;
 
 
 </body>
-
-<div>   
-        <a href="../../index.php" class="btn-primary"><i class="fas fa-home me-1"></i> Kembali ke Beranda</a>
-            </div>
 
             </html>
