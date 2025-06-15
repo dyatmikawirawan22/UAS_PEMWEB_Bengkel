@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 04, 2025 at 06:58 AM
+-- Generation Time: Jun 15, 2025 at 09:42 AM
 -- Server version: 8.4.5
 -- PHP Version: 8.2.12
 
@@ -42,20 +42,38 @@ CREATE TABLE `bookings` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `bookings`
+--
+
+INSERT INTO `bookings` (`id_booking`, `id_user`, `jenis_kendaraan_booking`, `tipe_kendaraan_booking`, `nopol_booking`, `tahun_booking`, `jenis_servis_booking`, `keluhan_booking`, `tanggal_booking`, `waktu_booking`, `status_booking`, `created_at`) VALUES
+(10, 20, 'Motor', 'Mio', 'A 1234 BC', '2025', 'Servis Ringan', 'TOLONG', '2025-06-16', '15:00-17:00', 'Batal', '2025-06-14 14:53:03');
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `chat`
+-- Table structure for table `chat_messages`
 --
 
-CREATE TABLE `chat` (
+CREATE TABLE `chat_messages` (
   `id_chat` int NOT NULL,
-  `pengirim_chat` int DEFAULT NULL,
-  `penerima_chat` int DEFAULT NULL,
-  `pesan_chat` text COLLATE utf8mb4_general_ci,
-  `waktu_chat` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `status_chat` enum('terbaca','baru') COLLATE utf8mb4_general_ci DEFAULT 'baru'
+  `id_pengirim` int DEFAULT NULL,
+  `id_penerima` int DEFAULT NULL,
+  `isi_pesan` text COLLATE utf8mb4_general_ci,
+  `waktu_kirim` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `chat_messages`
+--
+
+INSERT INTO `chat_messages` (`id_chat`, `id_pengirim`, `id_penerima`, `isi_pesan`, `waktu_kirim`) VALUES
+(1, 22, 20, 'halo', '2025-06-15 14:32:56'),
+(2, 20, 22, 'woi', '2025-06-15 14:33:14'),
+(3, 20, 22, 'saya mau beli bakso', '2025-06-15 14:33:21'),
+(4, 22, 20, 'ok', '2025-06-15 14:33:44'),
+(5, 22, 20, 'hahaha', '2025-06-15 14:34:22'),
+(6, 20, 22, 'anj', '2025-06-15 14:34:52');
 
 -- --------------------------------------------------------
 
@@ -83,6 +101,16 @@ CREATE TABLE `produk` (
   `stok_produk` int DEFAULT NULL,
   `harga_produk` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `produk`
+--
+
+INSERT INTO `produk` (`id_produk`, `nama_produk`, `kategori_produk`, `stok_produk`, `harga_produk`) VALUES
+(3, 'spion', '1', 100, 100000.00),
+(4, 'oli', '2', 250, 70000.00),
+(5, 'tempe', 'makanan', 0, 5000.00),
+(6, 'Tahu susu', 'makanan', 0, 5000.00);
 
 -- --------------------------------------------------------
 
@@ -116,6 +144,14 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id_user`, `nama_user`, `email_user`, `password_user`, `role_user`) VALUES
+(20, 'pelanggan1', 'pelanggan1@gmail.com', '$2y$10$3dAzKVLecGLkQMPRbbV0..V7voVzX913tXi6bdC0mASI13vTWZIBe', 'pelanggan'),
+(22, 'admin1', 'admin1@gmail.com', '$2y$10$FtNu0wzQWpegHcUigImAOuiVtj6Tmm05rCSVpAgldhfAxGTPtAfNG', 'admin');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -127,12 +163,10 @@ ALTER TABLE `bookings`
   ADD KEY `id_user` (`id_user`);
 
 --
--- Indexes for table `chat`
+-- Indexes for table `chat_messages`
 --
-ALTER TABLE `chat`
-  ADD PRIMARY KEY (`id_chat`),
-  ADD KEY `pengirim_chat` (`pengirim_chat`),
-  ADD KEY `penerima_chat` (`penerima_chat`);
+ALTER TABLE `chat_messages`
+  ADD PRIMARY KEY (`id_chat`);
 
 --
 -- Indexes for table `estimasi_servis`
@@ -168,13 +202,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `id_booking` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_booking` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT for table `chat`
+-- AUTO_INCREMENT for table `chat_messages`
 --
-ALTER TABLE `chat`
-  MODIFY `id_chat` int NOT NULL AUTO_INCREMENT;
+ALTER TABLE `chat_messages`
+  MODIFY `id_chat` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `estimasi_servis`
@@ -186,19 +220,19 @@ ALTER TABLE `estimasi_servis`
 -- AUTO_INCREMENT for table `produk`
 --
 ALTER TABLE `produk`
-  MODIFY `id_produk` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_produk` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `riwayat_servis`
 --
 ALTER TABLE `riwayat_servis`
-  MODIFY `id_riwayat` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_riwayat` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_user` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- Constraints for dumped tables
@@ -209,13 +243,6 @@ ALTER TABLE `users`
 --
 ALTER TABLE `bookings`
   ADD CONSTRAINT `bookings_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `chat`
---
-ALTER TABLE `chat`
-  ADD CONSTRAINT `chat_ibfk_1` FOREIGN KEY (`pengirim_chat`) REFERENCES `users` (`id_user`),
-  ADD CONSTRAINT `chat_ibfk_2` FOREIGN KEY (`penerima_chat`) REFERENCES `users` (`id_user`);
 
 --
 -- Constraints for table `riwayat_servis`
