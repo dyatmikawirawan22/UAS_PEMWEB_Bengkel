@@ -330,7 +330,7 @@ $role_user = $_SESSION['role_user'] ?? '';
                     </a>
                 </div>
                 <div class="col-12 col-md-6 mb-3">
-                    <a href="#" class="btn btn-chat btn-menu">
+                    <a href="pages/chat/chat.php" class="btn btn-chat btn-menu">
                         <i class="fas fa-comments me-2"></i> Live Chat
                     </a>
                 </div>

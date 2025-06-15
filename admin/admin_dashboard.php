@@ -214,7 +214,7 @@ $nama_user = $_SESSION['nama_user'];
         </a>
     </div>
     <div class="col-6 col-md-4 mb-3">
-        <a href="#" class="btn btn-chat btn-menu w-100">
+        <a href="../pages/chat/chat.php" class="btn btn-chat btn-menu w-100">
             <i class="fas fa-comments me-2"></i> Live Chat
         </a>
     </div>
