@@ -39,11 +39,8 @@ index.php
 
 ## Developer
 
-- Nama: - Aloisius Deardo Purba
-        - Naufal Rahmadi Atha
-        - Muhammad Bazwa Arigusna
-        - Dyatmika Wirawan
-- Kampus: UPN "VETERAN" JAWA TIMUR
+- Nama: Aloisius Deardo Purba, Naufal Rahmadi Atha, Muhammad Bazwa Arigusna, Dyatmika Wirawan
+- UPN "VETERAN" JAWA TIMUR
 
 ## Catatan
 
