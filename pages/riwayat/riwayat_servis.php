@@ -27,7 +27,7 @@ $id_user = $_SESSION['id_user'];
         }
         body {
             font-family: 'Roboto', sans-serif;
-            background-image: url('../../../haha.jpg');
+            background-image: url('../../haha.jpg');
             background-size: cover;
             background-attachment: fixed;
             position: relative;

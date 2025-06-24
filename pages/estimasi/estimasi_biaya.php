@@ -25,7 +25,7 @@ $nama_user = isset($_SESSION['nama_user']) ? $_SESSION['nama_user'] : null;
         body {
             font-family: 'Roboto', sans-serif;
             background-color: #f9f9f9;
-            background-image: url('../../../haha.jpg');
+            background-image: url('../../haha.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;

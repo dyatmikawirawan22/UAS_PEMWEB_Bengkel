@@ -1,11 +1,11 @@
 <?php
 $host = "localhost";       // atau 127.0.0.1
-$user = "punjungr_bengkel";            // username default XAMPP
-$password = "bengkel123...";            // kosongkan jika tidak ada password
-$database = "punjungr_bengkel_sistem"; // nama database
+$user = "root";            // username default XAMPP
+$password = "";            // kosongkan jika tidak ada password
+$database = "bengkel_sistem"; // nama database
 
 // Buat koneksi
-$conn = mysqli_connect("localhost", "punjungr_bengkel", "bengkel123...", "punjungr_bengkel_sistem");
+$conn = mysqli_connect("localhost", "root", "", "bengkel_sistem");
 
 // Cek koneksi
 if (!$conn) {

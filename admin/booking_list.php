@@ -65,7 +65,7 @@ $result = mysqli_query($conn, "SELECT b.*, u.nama_user FROM bookings b JOIN user
         }
         body {
             font-family: 'Roboto', sans-serif;
-            background-image: url('../../haha.jpg');
+            background-image: url('../haha.jpg');
             background-size: cover;
             background-attachment: fixed;
             position: relative;

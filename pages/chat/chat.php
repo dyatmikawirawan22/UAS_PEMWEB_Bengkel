@@ -48,7 +48,7 @@ if ($role_user === 'pelanggan') {
         body {
             font-family: 'Roboto', sans-serif;
             background-color: #f9f9f9;
-            background-image: url('../../../haha.jpg');
+            background-image: url('../../haha.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;

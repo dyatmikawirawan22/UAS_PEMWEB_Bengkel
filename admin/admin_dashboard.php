@@ -24,7 +24,7 @@ $nama_user = $_SESSION['nama_user'];
         }
         body {
             font-family: 'Roboto', sans-serif;
-            background: url('../../haha.jpg') no-repeat center center fixed;
+            background: url('../haha.jpg') no-repeat center center fixed;
             background-size: cover;
         }
         body::before {

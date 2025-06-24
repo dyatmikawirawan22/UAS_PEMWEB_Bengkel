@@ -47,7 +47,7 @@ if (isset($_GET['hapus'])) {
         }
         body {
             font-family: 'Roboto', sans-serif;
-            background-image: url('../../haha.jpg');
+            background-image: url('../haha.jpg');
             background-size: cover;
             background-attachment: fixed;
             position: relative;

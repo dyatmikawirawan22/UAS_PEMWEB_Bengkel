@@ -44,6 +44,8 @@ index.php
 
 ## Catatan
 
+-Buat akun untuk admin: Buat akun sebagai pelanggan -> pada tabel user, ubah role menjadi admin
+
 - Import database dari file `bengkel_sistem.sql`
 - Koneksi database diatur pada `includes/db.php`:
   ```php
