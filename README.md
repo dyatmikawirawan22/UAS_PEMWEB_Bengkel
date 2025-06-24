@@ -37,7 +37,7 @@ Proyek ini merupakan aplikasi web bengkel motor bernama **Punjung Rejeki Motor**
 index.php
 ```
 
-## 👨‍💻 Developer
+## Developer
 
 - Nama: - Aloisius Deardo Purba
         - Naufal Rahmadi Atha
